@@ -5,23 +5,27 @@ declare(strict_types=1);
 return function (\Quill\Contracts\Container\ContainerInterface $container): void {
     /**
      * --------------------------------------------------
+     * Register Quill services and dependencies
+     * --------------------------------------------------
+     */
+    registerQuillSingletons($container);
+    registerQuillBindings($container);
+
+    /**
+     * --------------------------------------------------
      * Application Dependencies
      * --------------------------------------------------
      */
 
+};
 
+function registerQuillSingletons(\Quill\Contracts\Container\ContainerInterface $container): void
+{
+    $container->singleton(
+        id: \Quill\Contracts\Router\RouterInterface::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Router\Router($container->get(\Quill\Contracts\Middleware\MiddlewareFactoryInterface::class))
+    );
 
-
-
-    /**
-     * --------------------------------------------------
-     * Quill Framework Dependencies
-     * --------------------------------------------------
-     *
-     * --------------------------------------------------
-     * Singletons
-     * --------------------------------------------------
-     */
     $container->singleton(
         \Quill\Contracts\Configuration\ConfigurationInterface::class,
         fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Configuration\Config()
@@ -37,11 +41,27 @@ return function (\Quill\Contracts\Container\ContainerInterface $container): void
         resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Support\Path()
     );
 
-    /**
-     * --------------------------------------------------
-     * Bindings
-     * --------------------------------------------------
-     */
+    $container->singleton(
+        id: \Quill\Handler\RequestHandler::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Handler\RequestHandler()
+    );
+
+    $container->singleton(
+        id: \Quill\Middleware\ExecuteGlobalUserDefinedMiddlewares::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Middleware\ExecuteGlobalUserDefinedMiddlewares(
+            $container->get(\Quill\Contracts\Middleware\MiddlewarePipelineInterface::class),
+            $container->get(\Quill\Contracts\Router\MiddlewareStoreInterface::class)
+        )
+    );
+
+    $container->singleton(
+        id: \Quill\Contracts\Middleware\MiddlewareFactoryInterface::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Router\MiddlewareFactory($container)
+    );
+}
+
+function registerQuillBindings(\Quill\Contracts\Container\ContainerInterface $container): void
+{
     $container->register(
         id: \Quill\Contracts\ErrorHandler\ErrorHandlerInterface::class,
         resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Handler\Error\JsonErrorHandler(
@@ -84,4 +104,19 @@ return function (\Quill\Contracts\Container\ContainerInterface $container): void
         id: \Quill\Contracts\Request\RequestInterface::class,
         resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Request\Request($container->get(\Psr\Http\Message\RequestInterface::class))
     );
-};
+
+    $container->register(
+        id: \Quill\Middleware\RouteFinderMiddleware::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Middleware\RouteFinderMiddleware($container->get(\Quill\Contracts\Router\RouterInterface::class))
+    );
+
+    $container->register(
+        id: \Quill\Middleware\RouteFinderMiddleware::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Middleware\RouteFinderMiddleware($container->get(\Quill\Contracts\Router\RouterInterface::class))
+    );
+
+    $container->register(
+        id: \Quill\Middleware\ExecuteRouteMiddlewares::class,
+        resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Middleware\ExecuteRouteMiddlewares($container->get(\Quill\Contracts\Middleware\MiddlewarePipelineInterface::class))
+    );
+}

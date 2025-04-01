@@ -18,9 +18,9 @@ return function (\Quill\Contracts\Container\ContainerInterface $container): void
 
     /**
      * --------------------------------------------------
-     * Load routes files into memory
+     * Register routes inside routes folder
      * --------------------------------------------------
      */
     $routeFies = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes';
-    new \Quill\Loaders\RouteFilesLoader($container)->load($routeFies);
+    new \Quill\Loaders\RouteFilesLoader($container)->load();
 };
