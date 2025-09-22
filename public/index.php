@@ -7,7 +7,6 @@ require __DIR__ . '/../vendor/autoload.php';
 /** @var \Quill\Contracts\ApplicationInterface $app */
 $app = require_once __DIR__ . '/../boot/boot.php';
 
-/** @var \Nyholm\Psr7Server\ServerRequestCreatorInterface $request */
-$request = $app->container->get(\Nyholm\Psr7Server\ServerRequestCreatorInterface::class);
+$request = $app->container->get(\Psr\Http\Message\ServerRequestInterface::class);
 
-$app->processRequest($request->fromGlobals());
+$app->processRequest($request);

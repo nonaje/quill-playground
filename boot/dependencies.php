@@ -44,12 +44,9 @@ function registerQuillSingletons(\Quill\Contracts\Container\ContainerInterface $
     $container->singleton(
         id: \Quill\Handler\RequestHandler::class,
         resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new ReflectionClass(\Quill\Handler\RequestHandler::class)
-            ->newLazyGhost(fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Handler\RequestHandler(
-                $container,
-                $container->get(\Quill\Contracts\Response\ResponseInterface::class),
-                $container->get(\Quill\Contracts\Request\RequestInterface::class),
-                $container->get(\Quill\Contracts\Router\RouterInterface::class)
-        ))
+            ->newLazyGhost(function (\Quill\Handler\RequestHandler $handler) use ($container) {
+                $handler->__construct($container);
+            })
     );
 
     $container->singleton(
@@ -64,6 +61,51 @@ function registerQuillSingletons(\Quill\Contracts\Container\ContainerInterface $
         id: \Quill\Contracts\Middleware\MiddlewareFactoryInterface::class,
         resolver: fn (\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Router\MiddlewareFactory($container)
     );
+
+    $container->singleton(
+        id: \Psr\Http\Message\RequestFactoryInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\ResponseFactoryInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\ResponseInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()->createResponse()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\ServerRequestFactoryInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\StreamFactoryInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\StreamInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\UploadedFileFactoryInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\UploadedFileInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\UriInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Nyholm\Psr7\Factory\Psr17Factory()
+    );
 }
 
 function registerQuillBindings(\Quill\Contracts\Container\ContainerInterface $container): void
@@ -71,11 +113,6 @@ function registerQuillBindings(\Quill\Contracts\Container\ContainerInterface $co
     $container->register(
         id: \Psr\Http\Message\RequestInterface::class,
         resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => $container->get(\Nyholm\Psr7Server\ServerRequestCreatorInterface::class)->fromGlobals()
-    );
-
-    $container->register(
-        id: \Psr\Http\Message\ResponseInterface::class,
-        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Factory\Psr7\ResponseFactory()->createResponse()
     );
 
     $container->register(
@@ -99,16 +136,6 @@ function registerQuillBindings(\Quill\Contracts\Container\ContainerInterface $co
     $container->register(
         id: \Quill\Contracts\Router\MiddlewareStoreInterface::class,
         resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Router\MiddlewareStore($container)
-    );
-
-    $container->register(
-        id: \Quill\Contracts\Response\ResponseInterface::class,
-        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Response\Response()
-    );
-
-    $container->register(
-        id: \Quill\Contracts\Request\RequestInterface::class,
-        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Request\Request($container->get(\Psr\Http\Message\RequestInterface::class))
     );
 
     $container->register(
@@ -137,5 +164,20 @@ function registerQuillBindings(\Quill\Contracts\Container\ContainerInterface $co
                 streamFactory: $psr17Factory
             );
         }
+    );
+
+    $container->register(
+        id: \Quill\Contracts\Response\ResponseInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Response\Response()
+    );
+
+    $container->register(
+        id: \Quill\Contracts\Request\RequestInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => new \Quill\Request\Request($container->get(\Psr\Http\Message\RequestInterface::class))
+    );
+
+    $container->singleton(
+        id: \Psr\Http\Message\ServerRequestInterface::class,
+        resolver: fn(\Quill\Contracts\Container\ContainerInterface $container) => $container->get(\Nyholm\Psr7Server\ServerRequestCreatorInterface::class)->fromGlobals()
     );
 }
