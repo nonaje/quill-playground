@@ -11,6 +11,13 @@ return function(RouterInterface $route) {
         });
     });
 
+    $route->get('/admin', function ($req, $res) {
+        return $res->json([
+            'name' => 'John Doe',
+            'email' => 'john@doe.com',
+        ]);
+    });
+
     $route->get('/:id', function ($req, $res, $params) {
         return $res->json([
             'name' => 'John Doe',

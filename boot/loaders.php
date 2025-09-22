@@ -6,8 +6,7 @@ return function (\Quill\Contracts\Container\ContainerInterface $container): void
      * Load configuration files into memory
      * --------------------------------------------------
      */
-    $configurationFiles = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config';
-    new \Quill\Loaders\ConfigurationFilesLoader($container)->load($configurationFiles);
+    new \Quill\Loaders\ConfigurationFilesLoader($container)->load(CONFIG_DIR);
 
     /**
      * --------------------------------------------------
@@ -21,6 +20,5 @@ return function (\Quill\Contracts\Container\ContainerInterface $container): void
      * Register routes inside routes folder
      * --------------------------------------------------
      */
-    $routeFies = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes';
     new \Quill\Loaders\RouteFilesLoader($container)->load();
 };
