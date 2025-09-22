@@ -4,7 +4,7 @@
  * --------------------------------------------------
  * Initialize the container instance
  * --------------------------------------------------
- */
+*/
 $container = \Quill\Container\Container::make();
 
 /**
@@ -42,7 +42,7 @@ $quill = \Quill\Quill::make($container);
  */
 /** @var \Quill\Contracts\ErrorHandler\ErrorHandlerInterface $errorHandler */
 $errorHandler = $container->get(\Quill\Contracts\ErrorHandler\ErrorHandlerInterface::class);
-$errorHandler->displayErrors = ! $quill->isProduction();
+$errorHandler->displayErrors = ! $quill->isProduction;
 $errorHandler->listen();
 
 return $quill;

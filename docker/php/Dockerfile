@@ -29,6 +29,6 @@ RUN if [ "$INSTALL_XDEBUG" = "true" ]; then \
 # CUSTOM PHP CONFIGURATION
 COPY custom.ini /usr/local/etc/php/conf.d/
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 CMD ["php-fpm"]

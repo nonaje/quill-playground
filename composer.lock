@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f21f9fc40ba0d561eebd461e43e6e8f",
+    "content-hash": "b266194068e1bba2314459e95523391f",
     "packages": [
         {
             "name": "nonaje/quill-framework",
             "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nonaje/quill-framework.git",
-                "reference": "d837778eb4f31c2c16ba59141500ac7e372675de"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nonaje/quill-framework/zipball/d837778eb4f31c2c16ba59141500ac7e372675de",
-                "reference": "d837778eb4f31c2c16ba59141500ac7e372675de",
-                "shasum": ""
+                "type": "path",
+                "url": "../quill-framework",
+                "reference": "9ac2447960ad89807c90ea5c6404c387d26a6a32"
             },
             "require": {
                 "nyholm/psr7": "^1.8",
@@ -33,7 +27,6 @@
                 "pestphp/pest": "^2.34",
                 "symfony/var-dumper": "^7.0"
             },
-            "default-branch": true,
             "type": "project",
             "autoload": {
                 "psr-4": {
@@ -49,11 +42,10 @@
                 }
             ],
             "description": "A simple framework to make lightweight PHP APIs",
-            "support": {
-                "source": "https://github.com/nonaje/quill-framework/tree/main",
-                "issues": "https://github.com/nonaje/quill-framework/issues"
-            },
-            "time": "2025-03-26T17:00:25+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "nyholm/psr7",
@@ -528,7 +520,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/main"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.6.0"
             },
             "funding": [
                 {
@@ -537,6 +529,10 @@
                 },
                 {
                     "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
                     "type": "github"
                 },
                 {
@@ -610,7 +606,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/1.x"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.33.0"
             },
             "funding": [
                 {
@@ -622,6 +618,10 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
@@ -630,16 +630,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "7.3.x-dev",
+            "version": "7.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "c81427d1dd7ee144baf5ec964861bb39034da1f4"
+                "reference": "59052532348d426af0fae6f0bbcc5d8ab598db39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/c81427d1dd7ee144baf5ec964861bb39034da1f4",
-                "reference": "c81427d1dd7ee144baf5ec964861bb39034da1f4",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/59052532348d426af0fae6f0bbcc5d8ab598db39",
+                "reference": "59052532348d426af0fae6f0bbcc5d8ab598db39",
                 "shasum": ""
             },
             "require": {
@@ -651,11 +651,10 @@
                 "symfony/console": "<6.4"
             },
             "require-dev": {
-                "ext-iconv": "*",
-                "symfony/console": "^6.4|^7.0",
-                "symfony/http-kernel": "^6.4|^7.0",
-                "symfony/process": "^6.4|^7.0",
-                "symfony/uid": "^6.4|^7.0",
+                "symfony/console": "^6.4|^7.0|^8.0",
+                "symfony/http-kernel": "^6.4|^7.0|^8.0",
+                "symfony/process": "^6.4|^7.0|^8.0",
+                "symfony/uid": "^6.4|^7.0|^8.0",
                 "twig/twig": "^3.12"
             },
             "bin": [
@@ -694,7 +693,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/7.3"
+                "source": "https://github.com/symfony/var-dumper/tree/7.4"
             },
             "funding": [
                 {
@@ -706,11 +705,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-17T19:44:19+00:00"
+            "time": "2025-09-09T12:50:48+00:00"
         }
     ],
     "packages-dev": [],
