@@ -1,6 +1,6 @@
 {
-  "name": "nonaje/quill",
-  "description": "The ",
+  "name": "nonaje/quill-playground",
+  "description": "The playground for Quill Framework",
   "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
@@ -8,6 +8,11 @@
       "name": "Agustin Ferrari"
     }
   ],
+  "require": {
+    "php": "^8.4",
+    "nonaje/quill-framework": "*@dev",
+    "symfony/var-dumper": "^7.0.0"
+  },
   "config": {
     "platform": {
       "php": "8.4"
@@ -15,13 +20,20 @@
   },
   "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/nonaje/quill-framework"
+      "type": "path",
+      "url": "../quill-framework",
+      "options": { "symlink": true }
     }
   ],
-  "require": {
-    "php": "^8.4",
-    "nonaje/quill-framework": "dev-main",
-    "symfony/var-dumper": "^7.0.0"
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+    "scripts": {
+    "post-install-cmd": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "tinker": "php bin/tinker"
   }
 }
